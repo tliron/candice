@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e
+
+HERE=$(dirname "$(readlink --canonicalize "$BASH_SOURCE")")
+. "$HERE/../../../scripts/_env"
+. "$ROOT/scripts/_trap"
+
+BASE_IMAGE=fedora:33
+
+CONTAINER_ID=$(buildah from "$BASE_IMAGE")
+buildah add "$CONTAINER_ID" "$HERE/install-netopeer2" /usr/bin/
+buildah add "$CONTAINER_ID" "$HERE/run-netopeer2" /usr/bin/
+buildah run "$CONTAINER_ID" -- sh -c "echo root:root | chpasswd"
+buildah run "$CONTAINER_ID" -- /usr/bin/install-netopeer2
+buildah config \
+	--entrypoint /usr/bin/run-netopeer2 \
+	--author Candice \
+	--created-by buildah \
+	"$CONTAINER_ID"
+buildah commit "$CONTAINER_ID" localhost/router

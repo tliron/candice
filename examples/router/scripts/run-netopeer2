@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+/usr/bin/netopeer2-server -d -v 1
+
+# https://stackoverflow.com/a/52033580

@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+HERE=$(dirname "$(readlink --canonicalize "$BASH_SOURCE")")
+. "$HERE/_env"
+
+gofmt -w -s -e \
+	"$ROOT/client/admin" \
+	"$ROOT/client/command" \
+	"$ROOT/client/direct" \
+	"$ROOT/client/registry" \
+	"$ROOT/client/spooler" \
+	"$ROOT/controller" \
+	"$ROOT/candice" \
+	"$ROOT/candice/commands" \
+	"$ROOT/candice-operator" \
+	"$ROOT/candice-registry-client" \
+	"$ROOT/candice-registry-spooler" \
+	"$ROOT/resources" \
+	"$ROOT/resources/candice.cloud" \
+	"$ROOT/resources/candice.cloud/v1alpha1"

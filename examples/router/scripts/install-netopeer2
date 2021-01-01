@@ -1,0 +1,55 @@
+#!/bin/bash
+set -e
+
+LIBYANG_VERSION=v1.0.184
+LIBNETCONF_VERSION=v1.1.26
+SYSREPO_VERSION=v1.4.70
+NETOPEER2_VERSION=v1.1.39
+
+dnf --assumeyes install \
+	which crypto-policies-scripts \
+	git cmake make gcc gcc-c++ swig openssl \
+	libcurl-devel libssh-devel openssl-devel pcre-devel python3-devel \
+	libcmocka-devel doxygen groff-perl
+
+dnf --assumeyes clean all
+
+# optional: libcmocka-devel is to enable tests
+# optional: doxygen, groff-perl are for generating documentation
+
+function build () {
+	local DIR=$1
+	mkdir "$DIR/build"
+	pushd "$DIR/build" > /dev/null
+	cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/usr "${@:2}"
+	make --jobs=$(nproc)
+	make install
+	popd > /dev/null
+	rm --recursive --force "$DIR"
+}
+
+cd /tmp
+
+# libyang
+# requires: pcre-devel, python3-devel, swig
+git clone --branch $LIBYANG_VERSION https://github.com/CESNET/libyang.git
+build libyang -DGEN_LANGUAGE_BINDINGS:BOOL=ON
+
+# libnetconf2
+# requires: openssl-devel, libssh-devel, libyang (above)
+git clone --branch $LIBNETCONF_VERSION https://github.com/CESNET/libnetconf2.git
+build libnetconf2
+
+# sysrepo
+# requires: libyang (above), python3-devel, swig
+git clone --branch $SYSREPO_VERSION https://github.com/sysrepo/sysrepo.git
+build sysrepo -DGEN_LANGUAGE_BINDINGS:BOOL=ON -DREPO_PATH:PATH=/etc/sysrepo
+
+# netopeer2
+# requires: libcurl-devel, libssh-devel, openssl, libyang (above), libnetconf2 (above), sysrepo (above)
+git clone --branch $NETOPEER2_VERSION https://github.com/CESNET/Netopeer2.git
+build Netopeer2 -DGEN_LANGUAGE_BINDINGS:BOOL=ON
+
+# This allows Fedora to use the old "ssh-rsa" algorithm for libssh
+# (Unfortunately, Python clients that rely on Paramiko do not yet support newer algorithms)
+update-crypto-policies --set LEGACY

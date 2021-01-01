@@ -1,0 +1,53 @@
+
+builds:
+
+- id: candice
+  main: ./candice
+  binary: candice
+  goarch:
+  - amd64
+  goos:
+  - linux
+  - darwin
+  - windows
+  ldflags:
+  - -X 'github.com/tliron/kutil/version.GitVersion={{.Env.VERSION}}'
+  - -X 'github.com/tliron/kutil/version.GitRevision={{.Env.REVISION}}'
+  - -X 'github.com/tliron/kutil/version.Timestamp={{.Env.TIMESTAMP}}'
+
+nfpms:
+
+- formats:
+  - rpm
+  - deb
+  homepage: https://github.com/tliron/candice
+  maintainer: Tal Liron <tal.liron@gmail.com>
+  description: Cloud-Native Network Device Configurator
+  license: Apache 2.0
+
+archives:
+
+- files:
+  - README.md
+  - LICENSE
+  - NOTICE
+  - assets/kubernetes/**/*
+  - assets/tosca/**/*
+  - examples/**/*
+
+  format_overrides:
+  - goos: windows
+    format: zip
+
+checksum:
+
+  name_template: checksums.txt
+
+release:
+
+  #disable: true
+  #prerelease: true
+
+  github:
+    owner: tliron
+    name: candice

@@ -1,0 +1,33 @@
+#!/bin/bash
+set -e
+
+HERE=$(dirname "$(readlink --canonicalize "$BASH_SOURCE")")
+. "$HERE/../scripts/_env"
+. "$HERE/_env"
+. "$ROOT/scripts/_trap"
+
+NAMESPACE=${NAMESPACE:-mynamespace}
+
+m 'cleaning up...'
+
+kubectl create namespace "$NAMESPACE" || true
+kubectl config set-context --current --namespace="$NAMESPACE"
+
+candice operator uninstall --wait -v
+kubectl delete events --all
+
+if [ "$1" == '-b' ]; then
+	"$ROOT/scripts/build-container-image"
+	"$ROOT/scripts/publish-container-image"
+fi
+
+m 'installing operator...'
+
+candice operator install --wait -v
+candice device create router --host router.mynamespace.svc.cluster.local:830
+candice task set router set-ip --file="$ROOT/examples/routers/tasks/set-ip.py"
+candice task run router set-ip
+
+
+# https://github.com/clicon/clixon
+# flex bison

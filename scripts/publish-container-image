@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e
+
+HERE=$(dirname "$(readlink --canonicalize "$BASH_SOURCE")")
+. "$HERE/_env"
+. "$HERE/_trap"
+
+function publish () {
+	local IMAGE=$1
+	local LOCAL=localhost/$IMAGE
+	local REMOTE=docker://docker.io/tliron/$IMAGE
+
+	m "publishing $IMAGE..."
+	skopeo delete "$REMOTE" || true
+	buildah push "$LOCAL" "$REMOTE"
+}
+
+buildah login docker.io
+
+publish candice-operator

@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+HERE=$(dirname "$(readlink --canonicalize "$BASH_SOURCE")")
+. "$HERE/_env"
+. "$HERE/_trap"
+
+rm --force "$ROOT/go.mod" "$ROOT/go.sum"
+
+cd "$ROOT"
+go mod init "$MODULE"
+go get k8s.io/client-go@v$K8S_VERSION
+
+"$HERE/test"
+
+go mod tidy
