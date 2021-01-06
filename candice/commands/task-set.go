@@ -15,15 +15,15 @@ func init() {
 }
 
 var taskSetCommand = &cobra.Command{
-	Use:   "set [DEVICE NAME] [TASK NAME]",
-	Short: "Sets a task for a device",
+	Use:   "set [COMPONENT NAME] [TASK NAME]",
+	Short: "Sets a task for a component",
 	Args:  cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		SetTask(args[0], args[1])
 	},
 }
 
-func SetTask(deviceName string, taskName string) {
+func SetTask(componentName string, taskName string) {
 	var reader io.Reader
 	if filePath != "" {
 		var err error
@@ -36,6 +36,6 @@ func SetTask(deviceName string, taskName string) {
 	bytes, err := ioutil.ReadAll(reader)
 	util.FailOnError(err)
 
-	err = NewClient().Client().SetTask(namespace, deviceName, taskName, util.BytesToString(bytes))
+	err = NewClient().Candice().SetTask(namespace, componentName, taskName, util.BytesToString(bytes))
 	util.FailOnError(err)
 }

@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+
+kubectl exec --stdin --tty router -- /bin/bash

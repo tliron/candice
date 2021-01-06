@@ -16,7 +16,7 @@ import (
 var inputs []string
 var inputsUrl string
 
-var inputValues ard.Map
+var inputValues = make(map[string]interface{})
 
 func init() {
 	taskCommand.AddCommand(taskRunCommand)
@@ -25,17 +25,17 @@ func init() {
 }
 
 var taskRunCommand = &cobra.Command{
-	Use:   "run [DEVICE NAME] [TASK NAME]",
-	Short: "Run a task for a device",
+	Use:   "run [COMPONENT NAME] [TASK NAME]",
+	Short: "Run a task for a component",
 	Args:  cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		RunTask(args[0], args[1])
 	},
 }
 
-func RunTask(deviceName string, taskName string) {
+func RunTask(componentName string, taskName string) {
 	ParseInputs()
-	result, err := NewClient().Client().RunTask(namespace, deviceName, taskName, inputValues)
+	result, err := NewClient().Candice().RunTask(namespace, componentName, taskName, inputValues)
 	util.FailOnError(err)
 	result, _ = ard.ToStringMaps(result)
 	formatpkg.Print(result, format, terminal.Stdout, strict, pretty)

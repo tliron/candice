@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+
+HERE=$(dirname "$(readlink --canonicalize "$BASH_SOURCE")")
+. "$HERE/../../../scripts/_env"
+. "$ROOT/scripts/_trap"
+
+kubectl delete -f "$HERE/../kubernetes/router.yaml" || true
+
+if [ "$1" == '-b' ]; then
+	"$HERE/build-container-image"
+	"$HERE/publish-container-image"
+fi
+
+kubectl create -f "$HERE/../kubernetes/router.yaml"

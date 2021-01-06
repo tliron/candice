@@ -5,9 +5,9 @@ import (
 	"io"
 	"os"
 
+	"github.com/tliron/candice/controller"
 	"github.com/tliron/kutil/kubernetes"
 	"github.com/tliron/kutil/util"
-	"github.com/tliron/candice/controller"
 	"golang.org/x/crypto/ssh/terminal"
 )
 

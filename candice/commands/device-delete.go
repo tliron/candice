@@ -29,12 +29,12 @@ func DeleteDevice(deviceName string) {
 	// TODO: in cluster mode we must specify the namespace
 	namespace := ""
 
-	err := NewClient().Client().DeleteDevice(namespace, deviceName)
+	err := NewClient().Candice().DeleteDevice(namespace, deviceName)
 	util.FailOnError(err)
 }
 
 func DeleteAllRegistries() {
-	candice := NewClient().Client()
+	candice := NewClient().Candice()
 	devices, err := candice.ListDevices()
 	util.FailOnError(err)
 	if len(devices.Items) > 0 {

@@ -24,7 +24,7 @@ var deviceListCommand = &cobra.Command{
 }
 
 func ListDevices() {
-	devices, err := NewClient().Client().ListDevices()
+	devices, err := NewClient().Candice().ListDevices()
 	util.FailOnError(err)
 	if len(devices.Items) == 0 {
 		return

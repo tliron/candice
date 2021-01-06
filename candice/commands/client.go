@@ -54,7 +54,7 @@ func NewClient() *Client {
 	}
 }
 
-func (self *Client) Client() *client.Client {
+func (self *Client) Candice() *client.Client {
 	apiExtensions, err := apiextensionspkg.NewForConfig(self.Config)
 	util.FailOnError(err)
 

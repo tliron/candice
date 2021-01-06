@@ -13,16 +13,16 @@ func init() {
 }
 
 var taskGetCommand = &cobra.Command{
-	Use:   "get [DEVICE NAME] [TASK NAME]",
-	Short: "Gets a task for a device",
+	Use:   "get [COMPONENT NAME] [TASK NAME]",
+	Short: "Gets a task for a component",
 	Args:  cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		GetTask(args[0], args[1])
 	},
 }
 
-func GetTask(deviceName string, taskName string) {
-	task, err := NewClient().Client().GetTask(namespace, deviceName, taskName)
+func GetTask(componentName string, taskName string) {
+	task, err := NewClient().Candice().GetTask(namespace, componentName, taskName)
 	util.FailOnError(err)
 	fmt.Fprintln(terminal.Stdout, task)
 }

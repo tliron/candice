@@ -40,12 +40,12 @@ func CreateDevice(deviceName string) {
 		failDeviceCreate()
 	}
 
-	client := NewClient().Client()
+	candice := NewClient().Candice()
 	var err error
 	if service != "" {
-		_, err = client.CreateDeviceIndirect(namespace, deviceName, serviceNamespace, service, port)
+		_, err = candice.CreateDeviceIndirect(namespace, deviceName, serviceNamespace, service, port)
 	} else {
-		_, err = client.CreateDeviceDirect(namespace, deviceName, host)
+		_, err = candice.CreateDeviceDirect(namespace, deviceName, host)
 	}
 	util.FailOnError(err)
 }

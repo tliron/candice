@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/tliron/candice/controller"
 	"github.com/tliron/kutil/kubernetes"
 	terminalutil "github.com/tliron/kutil/terminal"
 	"github.com/tliron/kutil/util"
-	"github.com/tliron/candice/controller"
 )
 
 func Logs(appNameSuffix string, containerName string) {

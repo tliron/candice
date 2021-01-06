@@ -1,0 +1,39 @@
+<rpc-reply
+    xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"
+    message-id="101">
+  <data>
+    <interfaces
+        xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces"
+        xmlns:ianaift="urn:ietf:params:xml:ns:yang:iana-if-type"
+        xmlns:vlan="http://example.com/vlan">
+
+      <interface>
+        <name>eth0</name>
+        <type>ianaift:ethernetCsmacd</type>
+        <enabled>false</enabled>
+      </interface>
+
+      <interface>
+        <name>eth1</name>
+        <type>ianaift:ethernetCsmacd</type>
+        <enabled>true</enabled>
+        <vlan:vlan-tagging>true</vlan:vlan-tagging>
+      </interface>
+
+      <interface>
+        <name>eth1.10</name>
+        <type>ianaift:l2vlan</type>
+        <enabled>true</enabled>
+        <vlan:base-interface>eth1</vlan:base-interface>
+        <vlan:vlan-id>10</vlan:vlan-id>
+      </interface>
+
+      <interface>
+        <name>lo1</name>
+        <type>ianaift:softwareLoopback</type>
+        <enabled>true</enabled>
+      </interface>
+
+    </interfaces>
+  </data>
+</rpc-reply>

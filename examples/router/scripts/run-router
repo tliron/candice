@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+/usr/bin/sysrepo-plugind -d -v 3 &
+P1=$!
+
+/usr/bin/netopeer2-server -d -v 3 &
+P2=$!
+
+wait $P1 $P2

@@ -11,8 +11,8 @@ func init() {
 }
 
 var taskDeleteCommand = &cobra.Command{
-	Use:   "delete [DEVICE NAME] [[TASK NAME]]",
-	Short: "Delete a task for a device",
+	Use:   "delete [COMPONENT NAME] [[TASK NAME]]",
+	Short: "Delete a task for a component",
 	Args:  cobra.RangeArgs(1, 2),
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 2 {
@@ -25,18 +25,18 @@ var taskDeleteCommand = &cobra.Command{
 	},
 }
 
-func DeleteTask(deviceName string, taskName string) {
-	err := NewClient().Client().DeleteTask(namespace, deviceName, taskName)
+func DeleteTask(componentName string, taskName string) {
+	err := NewClient().Candice().DeleteTask(namespace, componentName, taskName)
 	util.FailOnError(err)
 }
 
-func DeleteAllTasks(deviceName string) {
-	client := NewClient().Client()
-	tasks, err := client.ListTasks(namespace, deviceName)
+func DeleteAllTasks(componentName string) {
+	candice := NewClient().Candice()
+	tasks, err := candice.ListTasks(namespace, componentName)
 	util.FailOnError(err)
 	for _, task := range tasks {
 		log.Infof("deleting task: %s", task)
-		err := client.DeleteTask(namespace, deviceName, task)
+		err := candice.DeleteTask(namespace, componentName, task)
 		util.FailOnError(err)
 	}
 }

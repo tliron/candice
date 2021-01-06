@@ -19,7 +19,10 @@ function build () {
 	local CONTAINER_ID=$(buildah from "$BASE_IMAGE")
 	buildah run "$CONTAINER_ID" -- dnf --assumeyes install python3
 	buildah run "$CONTAINER_ID" -- dnf --assumeyes clean all
-	buildah run "$CONTAINER_ID" -- python3 -m pip install ruamel.yaml ncclient
+	buildah run "$CONTAINER_ID" -- python3 -m pip install \
+		ruamel.yaml==$RUAMEL_YAML_VERSION \
+		ncclient==$NCCLIENT_VERSION \
+		ZODB==$ZODB_VERSION
 	buildah add "$CONTAINER_ID" "$GOPATH/bin/$EXECUTABLE" /usr/bin/
 	buildah add "$CONTAINER_ID" "$ROOT/python/candice.py" /usr/local/lib/python3.6/site-packages/
 	buildah config \

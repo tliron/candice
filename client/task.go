@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	resources "github.com/tliron/candice/resources/candice.cloud/v1alpha1"
 	"github.com/tliron/kutil/ard"
 	"github.com/tliron/kutil/format"
 	"github.com/tliron/kutil/kubernetes"
@@ -13,14 +14,14 @@ import (
 
 var permissions int64 = 0700
 
-func (self *Client) GetTask(namespace string, deviceName string, taskName string) (string, error) {
+func (self *Client) GetTask(namespace string, componentName string, taskName string) (string, error) {
 	// Default to same namespace as operator
 	if namespace == "" {
 		namespace = self.Namespace
 	}
 
 	appName := fmt.Sprintf("%s-%s", self.NamePrefix, "operator")
-	taskPath := self.getTaskPath(namespace, deviceName, taskName)
+	taskPath := self.getTaskPath(namespace, componentName, taskName)
 	if podNames, err := kubernetes.GetPodNames(self.Context, self.Kubernetes, self.Namespace, appName); err == nil {
 		for _, podName := range podNames {
 			self.Log.Infof("setting task %q in operator pod: %s/%s", taskName, self.Namespace, podName)
@@ -37,14 +38,14 @@ func (self *Client) GetTask(namespace string, deviceName string, taskName string
 	return "", nil
 }
 
-func (self *Client) SetTask(namespace string, deviceName string, taskName string, content string) error {
+func (self *Client) SetTask(namespace string, componentName string, taskName string, content string) error {
 	// Default to same namespace as operator
 	if namespace == "" {
 		namespace = self.Namespace
 	}
 
 	appName := fmt.Sprintf("%s-%s", self.NamePrefix, "operator")
-	taskPath := self.getTaskPath(namespace, deviceName, taskName)
+	taskPath := self.getTaskPath(namespace, componentName, taskName)
 	if podNames, err := kubernetes.GetPodNames(self.Context, self.Kubernetes, self.Namespace, appName); err == nil {
 		for _, podName := range podNames {
 			self.Log.Infof("setting task %q in operator pod: %s/%s", taskName, self.Namespace, podName)
@@ -59,14 +60,14 @@ func (self *Client) SetTask(namespace string, deviceName string, taskName string
 	return nil
 }
 
-func (self *Client) DeleteTask(namespace string, deviceName string, taskName string) error {
+func (self *Client) DeleteTask(namespace string, componentName string, taskName string) error {
 	// Default to same namespace as operator
 	if namespace == "" {
 		namespace = self.Namespace
 	}
 
 	appName := fmt.Sprintf("%s-%s", self.NamePrefix, "operator")
-	taskPath := self.getTaskPath(namespace, deviceName, taskName)
+	taskPath := self.getTaskPath(namespace, componentName, taskName)
 	if podNames, err := kubernetes.GetPodNames(self.Context, self.Kubernetes, self.Namespace, appName); err == nil {
 		for _, podName := range podNames {
 			if err := self.Exec(self.Namespace, podName, "operator", nil, nil, "rm", "--force", taskPath); err != nil {
@@ -80,7 +81,7 @@ func (self *Client) DeleteTask(namespace string, deviceName string, taskName str
 	return nil
 }
 
-func (self *Client) ListTasks(namespace string, deviceName string) ([]string, error) {
+func (self *Client) ListTasks(namespace string, componentName string) ([]string, error) {
 	// Default to same namespace as operator
 	if namespace == "" {
 		namespace = self.Namespace
@@ -89,7 +90,7 @@ func (self *Client) ListTasks(namespace string, deviceName string) ([]string, er
 	appName := fmt.Sprintf("%s-%s", self.NamePrefix, "operator")
 	if podName, err := kubernetes.GetFirstPodName(self.Context, self.Kubernetes, self.Namespace, appName); err == nil {
 		var buffer bytes.Buffer
-		if err := self.Exec(self.Namespace, podName, "operator", nil, &buffer, "find", filepath.Join("/tasks", namespace, deviceName), "-type", "f", "-printf", "%f\n"); err == nil {
+		if err := self.Exec(self.Namespace, podName, "operator", nil, &buffer, "find", filepath.Join("/tasks", namespace, componentName), "-type", "f", "-printf", "%f\n"); err == nil {
 			var names []string
 			for _, filename := range strings.Split(strings.TrimRight(buffer.String(), "\n"), "\n") {
 				names = append(names, filename)
@@ -103,19 +104,51 @@ func (self *Client) ListTasks(namespace string, deviceName string) ([]string, er
 	}
 }
 
-func (self *Client) RunTask(namespace string, deviceName string, taskName string, input ard.Value) (ard.Value, error) {
-	if inputYaml, err := format.EncodeYAML(input, " ", false); err == nil {
-		// Default to same namespace as operator
-		if namespace == "" {
-			namespace = self.Namespace
+func (self *Client) RunTask(namespace string, componentName string, taskName string, input ard.Value) (ard.Value, error) {
+	if devices, err := self.ListDevices(); err == nil {
+		task := make(ard.StringMap)
+		task["name"] = taskName
+		task["input"] = input
+
+		component := make(ard.StringMap)
+		component["name"] = componentName
+
+		devices_ := make(ard.StringMap)
+		for _, device := range devices.Items {
+			device_ := resources.DeviceToARD(&device)
+			delete(device_, "name")
+			devices_[device.Name] = device_
 		}
 
-		appName := fmt.Sprintf("%s-%s", self.NamePrefix, "operator")
-		taskPath := self.getTaskPath(namespace, deviceName, taskName)
-		if podName, err := kubernetes.GetFirstPodName(self.Context, self.Kubernetes, self.Namespace, appName); err == nil {
-			var buffer bytes.Buffer
-			if err := self.Exec(self.Namespace, podName, "operator", strings.NewReader(inputYaml), &buffer, taskPath); err == nil {
-				return format.DecodeYAML(buffer.String())
+		args := make(ard.StringMap)
+		args["task"] = task
+		args["component"] = component
+		args["devices"] = devices_
+
+		if argsYaml, err := format.EncodeYAML(args, " ", false); err == nil {
+			// Default to same namespace as operator
+			if namespace == "" {
+				namespace = self.Namespace
+			}
+
+			appName := fmt.Sprintf("%s-%s", self.NamePrefix, "operator")
+			taskPath := self.getTaskPath(namespace, componentName, taskName)
+			if podName, err := kubernetes.GetFirstPodName(self.Context, self.Kubernetes, self.Namespace, appName); err == nil {
+				var buffer bytes.Buffer
+				if err := self.Exec(self.Namespace, podName, "operator", strings.NewReader(argsYaml), &buffer, taskPath); err == nil {
+					return format.DecodeYAML(buffer.String())
+				} else {
+					if execError, ok := err.(*kubernetes.ExecError); ok {
+						error_ := make(ard.StringMap)
+						error_["message"] = execError.Err.Error()
+						error_["stderr"] = execError.Stderr
+						output := make(ard.StringMap)
+						output["error"] = error_
+						return output, nil
+					} else {
+						return nil, err
+					}
+				}
 			} else {
 				return nil, err
 			}
@@ -127,6 +160,6 @@ func (self *Client) RunTask(namespace string, deviceName string, taskName string
 	}
 }
 
-func (self *Client) getTaskPath(namespace string, deviceName string, taskName string) string {
-	return filepath.Join("/tasks", namespace, deviceName, taskName)
+func (self *Client) getTaskPath(namespace string, componentName string, taskName string) string {
+	return filepath.Join("/tasks", namespace, componentName, taskName)
 }

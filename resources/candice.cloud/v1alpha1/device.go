@@ -189,19 +189,19 @@ var DeviceCustomResourceDefinition = apiextensions.CustomResourceDefinition{
 
 func DeviceToARD(device *Device) ard.StringMap {
 	map_ := make(ard.StringMap)
-	map_["Name"] = device.Name
-	map_["Protocol"] = device.Spec.Protocol
+	map_["name"] = device.Name
+	map_["protocol"] = device.Spec.Protocol
 	if device.Spec.Direct != nil {
-		map_["Direct"] = ard.StringMap{
-			"Host": device.Spec.Direct.Host,
+		map_["direct"] = ard.StringMap{
+			"host": device.Spec.Direct.Host,
 		}
 	} else if device.Spec.Indirect != nil {
-		map_["Indirect"] = ard.StringMap{
-			"Namespace": device.Spec.Indirect.Namespace,
-			"Service":   device.Spec.Indirect.Service,
-			"Port":      device.Spec.Indirect.Port,
+		map_["indirect"] = ard.StringMap{
+			"namespace": device.Spec.Indirect.Namespace,
+			"service":   device.Spec.Indirect.Service,
+			"port":      device.Spec.Indirect.Port,
 		}
 	}
-	map_["LastError"] = device.Status.LastError
+	map_["lastError"] = device.Status.LastError
 	return map_
 }

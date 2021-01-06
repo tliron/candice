@@ -31,8 +31,6 @@ archives:
   - README.md
   - LICENSE
   - NOTICE
-  - assets/kubernetes/**/*
-  - assets/tosca/**/*
   - examples/**/*
 
   format_overrides:

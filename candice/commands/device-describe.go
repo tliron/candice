@@ -27,7 +27,7 @@ func DescribeDevice(deviceName string) {
 	// TODO: in cluster mode we must specify the namespace
 	namespace := ""
 
-	device, err := NewClient().Client().GetDevice(namespace, deviceName)
+	device, err := NewClient().Candice().GetDevice(namespace, deviceName)
 	util.FailOnError(err)
 
 	if format != "" {

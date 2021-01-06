@@ -22,6 +22,6 @@ var operatorInstallCommand = &cobra.Command{
 }
 
 func InstallOperator() {
-	err := NewClient().Client().InstallOperator(sourceRegistry, wait)
+	err := NewClient().Candice().InstallOperator(sourceRegistry, wait)
 	util.FailOnError(err)
 }

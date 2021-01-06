@@ -247,6 +247,10 @@ func (self *Client) createOperatorDeployment(sourceRegistryHost string, serviceA
 									Name:      "models",
 									MountPath: "/models",
 								},
+								{
+									Name:      "store",
+									MountPath: "/store",
+								},
 							},
 							Env: []core.EnvVar{
 								{
@@ -283,6 +287,10 @@ func (self *Client) createOperatorDeployment(sourceRegistryHost string, serviceA
 						},
 						{
 							Name:         "models",
+							VolumeSource: self.VolumeSource("1Gi"),
+						},
+						{
+							Name:         "store",
 							VolumeSource: self.VolumeSource("1Gi"),
 						},
 					},

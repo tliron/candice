@@ -6,16 +6,27 @@ LIBNETCONF_VERSION=v1.1.26
 SYSREPO_VERSION=v1.4.70
 NETOPEER2_VERSION=v1.1.39
 
+#
+# Preparation
+#
+
+WORK=/tmp/work
+
+mkdir "$WORK"
+cd "$WORK"
+
 dnf --assumeyes install \
-	which crypto-policies-scripts \
+	which psmisc crypto-policies-scripts \
 	git cmake make gcc gcc-c++ swig openssl \
 	libcurl-devel libssh-devel openssl-devel pcre-devel python3-devel \
 	libcmocka-devel doxygen groff-perl
 
-dnf --assumeyes clean all
-
 # optional: libcmocka-devel is to enable tests
 # optional: doxygen, groff-perl are for generating documentation
+
+#
+# Build
+#
 
 function build () {
 	local DIR=$1
@@ -25,10 +36,7 @@ function build () {
 	make --jobs=$(nproc)
 	make install
 	popd > /dev/null
-	rm --recursive --force "$DIR"
 }
-
-cd /tmp
 
 # libyang
 # requires: pcre-devel, python3-devel, swig
@@ -45,11 +53,52 @@ build libnetconf2
 git clone --branch $SYSREPO_VERSION https://github.com/sysrepo/sysrepo.git
 build sysrepo -DGEN_LANGUAGE_BINDINGS:BOOL=ON -DREPO_PATH:PATH=/etc/sysrepo
 
+# sysrepo_plugin_ietf_system
+# requires: sysrepo (above)
+git clone https://github.com/dklibc/sysrepo_plugin_ietf_system.git
+pushd sysrepo_plugin_ietf_system > /dev/null
+make --jobs=$(nproc)
+make install
+# Makefile starts but does not stop sysrepo-plugind 
+killall sysrepo-plugind
+popd > /dev/null
+
 # netopeer2
 # requires: libcurl-devel, libssh-devel, openssl, libyang (above), libnetconf2 (above), sysrepo (above)
 git clone --branch $NETOPEER2_VERSION https://github.com/CESNET/Netopeer2.git
 build Netopeer2 -DGEN_LANGUAGE_BINDINGS:BOOL=ON
 
+#
+# YANG models
+#
+
+NETCONF_CENTRAL=http://dld.netconfcentral.org/src
+
+function fetch_yang () {
+	local NAME=$1.yang
+	curl --output "$NAME" "$NETCONF_CENTRAL/$NAME"
+	sysrepoctl --install "$NAME" --apply --permissions 666
+	# /etc/sysrepo/yang/
+}
+
+fetch_yang ietf-interfaces@2017-12-16
+fetch_yang ietf-routing@2017-12-11
+
 # This allows Fedora to use the old "ssh-rsa" algorithm for libssh
 # (Unfortunately, Python clients that rely on Paramiko do not yet support newer algorithms)
 update-crypto-policies --set LEGACY
+
+#
+# Cleanup
+#
+
+# Remove everything except openssl
+dnf --assumeyes autoremove \
+	which psmisc crypto-policies-scripts \
+	git cmake make gcc gcc-c++ swig \
+	libcurl-devel libssh-devel openssl-devel pcre-devel python3-devel \
+	libcmocka-devel doxygen groff-perl
+
+dnf --assumeyes clean all
+
+rm --recursive --force "$WORK"

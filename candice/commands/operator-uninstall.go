@@ -18,5 +18,5 @@ var operatorUninstallCommand = &cobra.Command{
 }
 
 func UninstallOperator() {
-	NewClient().Client().UninstallOperator(wait)
+	NewClient().Candice().UninstallOperator(wait)
 }

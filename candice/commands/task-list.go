@@ -16,16 +16,16 @@ func init() {
 }
 
 var taskListCommand = &cobra.Command{
-	Use:   "list [DEVICE NAME]",
-	Short: "List tasks for a device",
+	Use:   "list [COMPONENT NAME]",
+	Short: "List tasks for a component",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		ListTasks(args[0])
 	},
 }
 
-func ListTasks(deviceName string) {
-	tasks, err := NewClient().Client().ListTasks(namespace, deviceName)
+func ListTasks(componentName string) {
+	tasks, err := NewClient().Candice().ListTasks(namespace, componentName)
 	util.FailOnError(err)
 	if len(tasks) == 0 {
 		return

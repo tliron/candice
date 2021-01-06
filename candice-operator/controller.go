@@ -6,11 +6,11 @@ import (
 
 	"github.com/heptiolabs/healthcheck"
 	"github.com/tebeka/atexit"
+	candicepkg "github.com/tliron/candice/apis/clientset/versioned"
+	controllerpkg "github.com/tliron/candice/controller"
 	"github.com/tliron/kutil/kubernetes"
 	"github.com/tliron/kutil/util"
 	versionpkg "github.com/tliron/kutil/version"
-	candicepkg "github.com/tliron/candice/apis/clientset/versioned"
-	controllerpkg "github.com/tliron/candice/controller"
 	apiextensionspkg "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	"k8s.io/client-go/dynamic"
 	kubernetespkg "k8s.io/client-go/kubernetes"
