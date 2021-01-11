@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: ran
+  labels:
+    app.kubernetes.io/name: ran
+    app.kubernetes.io/instance: ran
+
+spec:
+  containers:
+  - name: ran
+    image: docker.io/clixon/3gpp # See: https://github.com/clicon/clixon-examples/tree/master/3gpp
+    imagePullPolicy: Always
+    ports:
+    - name: netconf
+      containerPort: 80
+      protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: ran
+  labels:
+    app.kubernetes.io/name: ran
+    app.kubernetes.io/instance: ran
+
+spec:
+  selector:
+    app.kubernetes.io/name: ran
+    app.kubernetes.io/instance: ran
+  ports:
+  - { name: netconf, protocol: TCP, targetPort: 80, port: 80 }

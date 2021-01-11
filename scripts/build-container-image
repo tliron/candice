@@ -22,7 +22,8 @@ function build () {
 	buildah run "$CONTAINER_ID" -- python3 -m pip install \
 		ruamel.yaml==$RUAMEL_YAML_VERSION \
 		ncclient==$NCCLIENT_VERSION \
-		ZODB==$ZODB_VERSION
+		ZODB==$ZODB_VERSION \
+		requests==$REQUESTS_VERSION
 	buildah add "$CONTAINER_ID" "$GOPATH/bin/$EXECUTABLE" /usr/bin/
 	buildah add "$CONTAINER_ID" "$ROOT/python/candice.py" /usr/local/lib/python3.6/site-packages/
 	buildah config \

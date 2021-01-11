@@ -29,7 +29,7 @@ func (self *Client) ListDevices() (*resources.DeviceList, error) {
 	return self.Candice.CandiceV1alpha1().Devices(self.Namespace).List(self.Context, meta.ListOptions{})
 }
 
-func (self *Client) CreateDeviceDirect(namespace string, deviceName string, host string) (*resources.Device, error) {
+func (self *Client) CreateDeviceDirect(namespace string, deviceName string, protocol string, host string) (*resources.Device, error) {
 	// Default to same namespace as operator
 	if namespace == "" {
 		namespace = self.Namespace
@@ -41,7 +41,7 @@ func (self *Client) CreateDeviceDirect(namespace string, deviceName string, host
 			Namespace: namespace,
 		},
 		Spec: resources.DeviceSpec{
-			Protocol: resources.DeviceProtocolNETCONF,
+			Protocol: resources.DeviceProtocol(protocol),
 			Direct: &resources.DeviceDirect{
 				Host: host,
 			},
@@ -51,7 +51,7 @@ func (self *Client) CreateDeviceDirect(namespace string, deviceName string, host
 	return self.createDevice(namespace, deviceName, device)
 }
 
-func (self *Client) CreateDeviceIndirect(namespace string, deviceName string, serviceNamespace string, serviceName string, port uint64) (*resources.Device, error) {
+func (self *Client) CreateDeviceIndirect(namespace string, deviceName string, protocol string, serviceNamespace string, serviceName string, port uint64) (*resources.Device, error) {
 	// Default to same namespace as operator
 	if namespace == "" {
 		namespace = self.Namespace
@@ -63,7 +63,7 @@ func (self *Client) CreateDeviceIndirect(namespace string, deviceName string, se
 			Namespace: namespace,
 		},
 		Spec: resources.DeviceSpec{
-			Protocol: resources.DeviceProtocolNETCONF,
+			Protocol: resources.DeviceProtocol(protocol),
 			Indirect: &resources.DeviceIndirect{
 				Namespace: serviceNamespace,
 				Service:   serviceName,

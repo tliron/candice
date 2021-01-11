@@ -22,7 +22,8 @@ const (
 	DevicePlural    = "devices"
 	DeviceShortName = "dev"
 
-	DeviceProtocolNETCONF DeviceProtocol = "netconf"
+	DeviceProtocolNETCONF  DeviceProtocol = "netconf"
+	DeviceProtocolRESTCONF DeviceProtocol = "restconf"
 )
 
 //
@@ -121,6 +122,7 @@ var DeviceCustomResourceDefinition = apiextensions.CustomResourceDefinition{
 										Type:        "string",
 										Enum: []apiextensions.JSON{
 											kubernetes.JSONString(DeviceProtocolNETCONF),
+											kubernetes.JSONString(DeviceProtocolRESTCONF),
 										},
 									},
 									"direct": {

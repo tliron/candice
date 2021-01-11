@@ -21,7 +21,7 @@ Rationale
 
 Managing network services requires configuring their network functions. Whether those reside in
 clouds (CNFs and VNFs) or in boxes (PNFs) they may require sending the configuration data via
-NETCONF or similar protocols.
+NETCONF, RESTCONF, or similar protocols.
 
 This can be subtle work, as much of this data is contextual and conditional, e.g. you must query for
 what network interfaces are available and what features they have before setting them up to achieve
@@ -47,7 +47,7 @@ How It Works
 Candice is a Kubernetes operator that:
 
 1. lets you to create "Device" custom resources, which contain connectivity information
-   (addresses, protocols, credentials) for a device. Currently the NETCONF protocol is supported.
+   (addresses, protocols, credentials) for a device. Currently NETCONF and RESTCONF are supported.
 2. lets you attach "tasks" to the operator. A task is a Python program that handles a specific
    configuration workflow on one or more devices. Tasks can accept arbitrary inputs and emit
    arbitrary outputs, allowing you to customize them as necessary for integration with management

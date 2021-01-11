@@ -1,9 +1,14 @@
 
 import sys, threading
+
 from ruamel.yaml import YAML
-import ncclient.manager
-import ZODB, ZODB.FileStorage, BTrees.OOBTree, transaction
+import json
 import lxml
+
+import ZODB, ZODB.FileStorage, BTrees.OOBTree, transaction
+
+import ncclient.manager
+import requests
 
 yaml=YAML()
 
@@ -107,6 +112,8 @@ class Device:
     def executor(self, type_):
         if type_ == "netconf":
             return NetconfExecutor(self)
+        elif type_ == "restconf":
+            return RestconfExecutor(self)
         else:
             raise Exception("unsupported executor: %s" % type_)
 
@@ -117,6 +124,12 @@ class Device:
 class Executor:
     def __init__(self, device):
         self.device = device
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        pass
 
 #
 # NetconfExecutor
@@ -171,3 +184,45 @@ class NetconfExecutor(Executor):
 
     def __exit__(self, type, value, traceback):
         self.manager.__exit__(type, value, traceback)
+
+#
+# RestconfExecutor
+#
+
+class RestconfExecutor(Executor):
+    def __init__(self, device):
+        super(RestconfExecutor, self).__init__(device)
+        host = device.device["direct"]["host"]
+        self.url = f"http://{host}/restconf/data" 
+        self.headers = {
+            "Accept" : "application/yang-data+json", 
+            "Content-Type" : "application/yang-data+json"}
+
+    def get(self, module):
+        response = requests.get(f"{self.url}/{module}", headers=self.headers)
+        if not response.ok:
+            raise RestconfError(response)
+        try:
+            return response.json()
+        except json.decoder.JSONDecodeError:
+            return response.text
+
+    def post(self, module, data):
+        response = requests.post(f"{self.url}/{module}", headers=self.headers, data=json.dumps(data))
+        if not response.ok:
+            raise RestconfError(response)
+        try:
+            return response.json()
+        except json.decoder.JSONDecodeError:
+            return response.text
+
+class RestconfError(Exception):
+    def __init__(self, response):
+        try:
+            error = response.json()["ietf-restconf:errors"]["error"]
+            message = error["error-message"]
+            super(RestconfError, self).__init__(message)
+            self.error = error
+        except:
+            super(RestconfError, self).__init__(response.text)
+

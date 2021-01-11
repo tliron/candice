@@ -27,7 +27,8 @@ candice operator install --wait -v
 
 m 'router device...'
 
-candice device create router --host router.mynamespace.svc.cluster.local:830
+candice device create router --host router.mynamespace.svc.cluster.local:830 --protocol=netconf
+
 candice task set router debug --file="$ROOT/examples/router/tasks/debug.py"
 candice task set router about --file="$ROOT/examples/router/tasks/about.py"
 candice task set router set-hostname --file="$ROOT/examples/router/tasks/set_hostname.py"
@@ -36,5 +37,13 @@ candice task set router set-ip --file="$ROOT/examples/router/tasks/set_ip.py"
 candice task run router set-hostname --input=hostname=myhost
 candice task run router about --input=message="hello world"
 
-# https://github.com/clicon/clixon
-# flex bison
+
+m 'ran device...'
+
+candice device create ran --host ran.mynamespace.svc.cluster.local:80 --protocol=restconf
+
+candice task set ran get-nrnetwork --file="$ROOT/examples/ran/tasks/get_nrnetwork.py"
+candice task set ran set-nrnetwork --file="$ROOT/examples/ran/tasks/set_nrnetwork.py"
+
+candice task run ran set-nrnetwork --input=id=22
+candice task run ran get-nrnetwork --input=id=22

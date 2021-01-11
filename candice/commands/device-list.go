@@ -33,12 +33,12 @@ func ListDevices() {
 
 	switch format {
 	case "":
-		table := terminal.NewTable(maxWidth, "Name", "Host", "Namespace", "Service", "Port", "LastError")
+		table := terminal.NewTable(maxWidth, "Name", "Protocol", "Host", "Namespace", "Service", "Port", "LastError")
 		for _, registry := range devices.Items {
 			if registry.Spec.Direct != nil {
-				table.Add(registry.Name, registry.Spec.Direct.Host, "", "", "", registry.Status.LastError)
+				table.Add(registry.Name, string(registry.Spec.Protocol), registry.Spec.Direct.Host, "", "", "", registry.Status.LastError)
 			} else if registry.Spec.Indirect != nil {
-				table.Add(registry.Name, "", registry.Spec.Indirect.Namespace, registry.Spec.Indirect.Service, fmt.Sprintf("%d", registry.Spec.Indirect.Port), registry.Status.LastError)
+				table.Add(registry.Name, string(registry.Spec.Protocol), "", registry.Spec.Indirect.Namespace, registry.Spec.Indirect.Service, fmt.Sprintf("%d", registry.Spec.Indirect.Port), registry.Status.LastError)
 			}
 		}
 		table.Print()

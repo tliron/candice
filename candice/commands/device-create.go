@@ -5,6 +5,7 @@ import (
 	"github.com/tliron/kutil/util"
 )
 
+var protocol string
 var host string
 var serviceNamespace string
 var service string
@@ -12,6 +13,7 @@ var port uint64
 
 func init() {
 	deviceCommand.AddCommand(deviceCreateCommand)
+	deviceCreateCommand.Flags().StringVarP(&protocol, "protocol", "p", "netconf", "device protocol (\"netconf\" or \"restconf\")")
 	deviceCreateCommand.Flags().StringVarP(&host, "host", "", "", "device host (\"host\" or \"host:port\")")
 	deviceCreateCommand.Flags().StringVarP(&serviceNamespace, "service-namespace", "", "", "device service namespace name (defaults to device namespace)")
 	deviceCreateCommand.Flags().StringVarP(&service, "service", "", "", "device service name")
@@ -43,9 +45,9 @@ func CreateDevice(deviceName string) {
 	candice := NewClient().Candice()
 	var err error
 	if service != "" {
-		_, err = candice.CreateDeviceIndirect(namespace, deviceName, serviceNamespace, service, port)
+		_, err = candice.CreateDeviceIndirect(namespace, deviceName, protocol, serviceNamespace, service, port)
 	} else {
-		_, err = candice.CreateDeviceDirect(namespace, deviceName, host)
+		_, err = candice.CreateDeviceDirect(namespace, deviceName, protocol, host)
 	}
 	util.FailOnError(err)
 }
