@@ -68,3 +68,8 @@ Usage example:
     
     candice task run router set-hostname --input=hostname=myhost
     candice task run router about
+
+Note that you don't need to have the `candice` CLI client locally, as it is also available on the
+operator's pod, e.g.:
+
+    kubectl exec candice-operator-857cd8bb9d-5p46n -- candice task run router about

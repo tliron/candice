@@ -9,6 +9,8 @@ import (
 	"github.com/tliron/kutil/util"
 )
 
+// EXPERIMENTAL
+
 func init() {
 	rootCommand.AddCommand(yangCommand)
 }

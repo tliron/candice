@@ -261,6 +261,15 @@ func (self *Client) createOperatorDeployment(sourceRegistryHost string, serviceA
 									Name:  "CANDICE_OPERATOR_verbose",
 									Value: "1",
 								},
+								{
+									// For kutil's kubernetes.GetConfiguredNamespace
+									Name: "KUBERNETES_NAMESPACE",
+									ValueFrom: &core.EnvVarSource{
+										FieldRef: &core.ObjectFieldSelector{
+											FieldPath: "metadata.namespace",
+										},
+									},
+								},
 							},
 							LivenessProbe: &core.Probe{
 								Handler: core.Handler{

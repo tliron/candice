@@ -78,6 +78,20 @@ class Task:
         except AttributeError:
             raise Exception("not in task")
 
+    def error(self, error):
+        """
+        'error' can be a string or a YAML-serializable data structure
+        """
+        if not isinstance(self.output, dict):
+            if self.output is not None:
+                self.output = {"output": self.output}
+            else:
+                self.output = {}
+        if isinstance(error, str):
+            self.output["error"] = {"message": error}
+        else:
+            self.output["error"] = error
+
     def abort(self):
         if self._store is None:
             raise Exception("not in 'with'")
@@ -94,7 +108,12 @@ class Task:
         if self._store is not None:
             self._store.commit()
             self._store = None
-        yaml.dump(self.output, sys.stdout)
+            self.store = None
+        if (self.output is not None) and (not isinstance(self.output, dict)):
+            # Make sure the the output is always a dict
+            self.output = {"output": self.output}
+        if self.output:
+            yaml.dump(self.output, sys.stdout)
 
 #
 # Device
@@ -207,6 +226,24 @@ class RestconfExecutor(Executor):
         except json.decoder.JSONDecodeError:
             return response.text
 
+    def put(self, module, data):
+        response = requests.put(f"{self.url}/{module}", headers=self.headers, data=json.dumps(data))
+        if not response.ok:
+            raise RestconfError(response)
+        try:
+            return response.json()
+        except json.decoder.JSONDecodeError:
+            return response.text
+
+    def delete(self, module):
+        response = requests.delete(f"{self.url}/{module}", headers=self.headers)
+        if not response.ok:
+            raise RestconfError(response)
+        try:
+            return response.json()
+        except json.decoder.JSONDecodeError:
+            return response.text
+
     def post(self, module, data):
         response = requests.post(f"{self.url}/{module}", headers=self.headers, data=json.dumps(data))
         if not response.ok:
@@ -225,4 +262,3 @@ class RestconfError(Exception):
             self.error = error
         except:
             super(RestconfError, self).__init__(response.text)
-
