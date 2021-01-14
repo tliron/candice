@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	resources "github.com/tliron/candice/resources/candice.cloud/v1alpha1"
+	resources "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
 	"github.com/tliron/kutil/ard"
 	formatpkg "github.com/tliron/kutil/format"
 	"github.com/tliron/kutil/terminal"

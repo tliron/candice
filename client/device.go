@@ -1,7 +1,7 @@
 package client
 
 import (
-	resources "github.com/tliron/candice/resources/candice.cloud/v1alpha1"
+	resources "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

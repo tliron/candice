@@ -8,8 +8,8 @@ import (
 
 	versioned "github.com/tliron/candice/apis/clientset/versioned"
 	internalinterfaces "github.com/tliron/candice/apis/informers/externalversions/internalinterfaces"
-	v1alpha1 "github.com/tliron/candice/apis/listers/candice.cloud/v1alpha1"
-	candicecloudv1alpha1 "github.com/tliron/candice/resources/candice.cloud/v1alpha1"
+	v1alpha1 "github.com/tliron/candice/apis/listers/candice.puccini.cloud/v1alpha1"
+	candicepuccinicloudv1alpha1 "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
@@ -55,7 +55,7 @@ func NewFilteredDeviceInformer(client versioned.Interface, namespace string, res
 				return client.CandiceV1alpha1().Devices(namespace).Watch(context.TODO(), options)
 			},
 		},
-		&candicecloudv1alpha1.Device{},
+		&candicepuccinicloudv1alpha1.Device{},
 		resyncPeriod,
 		indexers,
 	)
@@ -66,7 +66,7 @@ func (f *deviceInformer) defaultInformer(client versioned.Interface, resyncPerio
 }
 
 func (f *deviceInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&candicecloudv1alpha1.Device{}, f.defaultInformer)
+	return f.factory.InformerFor(&candicepuccinicloudv1alpha1.Device{}, f.defaultInformer)
 }
 
 func (f *deviceInformer) Lister() v1alpha1.DeviceLister {

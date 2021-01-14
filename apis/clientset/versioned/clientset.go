@@ -5,7 +5,7 @@ package versioned
 import (
 	"fmt"
 
-	candicev1alpha1 "github.com/tliron/candice/apis/clientset/versioned/typed/candice.cloud/v1alpha1"
+	candicev1alpha1 "github.com/tliron/candice/apis/clientset/versioned/typed/candice.puccini.cloud/v1alpha1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"

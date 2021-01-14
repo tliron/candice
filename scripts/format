@@ -11,5 +11,5 @@ gofmt -w -s -e \
 	"$ROOT/client" \
 	"$ROOT/controller" \
 	"$ROOT/resources" \
-	"$ROOT/resources/candice.cloud" \
-	"$ROOT/resources/candice.cloud/v1alpha1"
+	"$ROOT/resources/candice.puccini.cloud" \
+	"$ROOT/resources/candice.puccini.cloud/v1alpha1"

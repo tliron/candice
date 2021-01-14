@@ -4,7 +4,7 @@ package v1alpha1
 
 import (
 	"github.com/tliron/candice/apis/clientset/versioned/scheme"
-	v1alpha1 "github.com/tliron/candice/resources/candice.cloud/v1alpha1"
+	v1alpha1 "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
 	rest "k8s.io/client-go/rest"
 )
 
@@ -13,7 +13,7 @@ type CandiceV1alpha1Interface interface {
 	DevicesGetter
 }
 
-// CandiceV1alpha1Client is used to interact with features provided by the candice.cloud group.
+// CandiceV1alpha1Client is used to interact with features provided by the candice.puccini.cloud group.
 type CandiceV1alpha1Client struct {
 	restClient rest.Interface
 }

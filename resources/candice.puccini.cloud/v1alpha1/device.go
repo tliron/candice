@@ -3,7 +3,7 @@ package v1alpha1
 import (
 	"fmt"
 
-	group "github.com/tliron/candice/resources/candice.cloud"
+	group "github.com/tliron/candice/resources/candice.puccini.cloud"
 	"github.com/tliron/kutil/ard"
 	"github.com/tliron/kutil/kubernetes"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"

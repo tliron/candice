@@ -4,8 +4,8 @@ package fake
 
 import (
 	clientset "github.com/tliron/candice/apis/clientset/versioned"
-	candicev1alpha1 "github.com/tliron/candice/apis/clientset/versioned/typed/candice.cloud/v1alpha1"
-	fakecandicev1alpha1 "github.com/tliron/candice/apis/clientset/versioned/typed/candice.cloud/v1alpha1/fake"
+	candicev1alpha1 "github.com/tliron/candice/apis/clientset/versioned/typed/candice.puccini.cloud/v1alpha1"
+	fakecandicev1alpha1 "github.com/tliron/candice/apis/clientset/versioned/typed/candice.puccini.cloud/v1alpha1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"

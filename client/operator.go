@@ -3,7 +3,7 @@ package client
 import (
 	"fmt"
 
-	resources "github.com/tliron/candice/resources/candice.cloud/v1alpha1"
+	resources "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
 	"github.com/tliron/kutil/kubernetes"
 	apps "k8s.io/api/apps/v1"
 	core "k8s.io/api/core/v1"
@@ -244,10 +244,6 @@ func (self *Client) createOperatorDeployment(sourceRegistryHost string, serviceA
 									MountPath: "/tasks",
 								},
 								{
-									Name:      "models",
-									MountPath: "/models",
-								},
-								{
 									Name:      "store",
 									MountPath: "/store",
 								},
@@ -292,10 +288,6 @@ func (self *Client) createOperatorDeployment(sourceRegistryHost string, serviceA
 					Volumes: []core.Volume{
 						{
 							Name:         "tasks",
-							VolumeSource: self.VolumeSource("1Gi"),
-						},
-						{
-							Name:         "models",
 							VolumeSource: self.VolumeSource("1Gi"),
 						},
 						{

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	resources "github.com/tliron/candice/resources/candice.cloud/v1alpha1"
+	resources "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
 	"github.com/tliron/kutil/ard"
 	"github.com/tliron/kutil/format"
 	"github.com/tliron/kutil/kubernetes"

@@ -8,7 +8,7 @@ import (
 	time "time"
 
 	versioned "github.com/tliron/candice/apis/clientset/versioned"
-	candicecloud "github.com/tliron/candice/apis/informers/externalversions/candice.cloud"
+	candicepuccinicloud "github.com/tliron/candice/apis/informers/externalversions/candice.puccini.cloud"
 	internalinterfaces "github.com/tliron/candice/apis/informers/externalversions/internalinterfaces"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -156,9 +156,9 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
-	Candice() candicecloud.Interface
+	Candice() candicepuccinicloud.Interface
 }
 
-func (f *sharedInformerFactory) Candice() candicecloud.Interface {
-	return candicecloud.New(f, f.namespace, f.tweakListOptions)
+func (f *sharedInformerFactory) Candice() candicepuccinicloud.Interface {
+	return candicepuccinicloud.New(f, f.namespace, f.tweakListOptions)
 }

@@ -3,7 +3,7 @@
 package fake
 
 import (
-	v1alpha1 "github.com/tliron/candice/apis/clientset/versioned/typed/candice.cloud/v1alpha1"
+	v1alpha1 "github.com/tliron/candice/apis/clientset/versioned/typed/candice.puccini.cloud/v1alpha1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )

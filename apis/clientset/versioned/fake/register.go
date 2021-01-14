@@ -3,7 +3,7 @@
 package fake
 
 import (
-	candicev1alpha1 "github.com/tliron/candice/resources/candice.cloud/v1alpha1"
+	candicev1alpha1 "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"

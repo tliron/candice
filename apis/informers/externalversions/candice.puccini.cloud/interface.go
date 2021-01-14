@@ -3,7 +3,7 @@
 package candice
 
 import (
-	v1alpha1 "github.com/tliron/candice/apis/informers/externalversions/candice.cloud/v1alpha1"
+	v1alpha1 "github.com/tliron/candice/apis/informers/externalversions/candice.puccini.cloud/v1alpha1"
 	internalinterfaces "github.com/tliron/candice/apis/informers/externalversions/internalinterfaces"
 )
 

@@ -5,7 +5,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	group "github.com/tliron/candice/resources/candice.cloud"
+	group "github.com/tliron/candice/resources/candice.puccini.cloud"
 )
 
 // Group version used to register these objects
