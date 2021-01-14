@@ -12,7 +12,7 @@ with candice.Task() as task:
 
     device = candice.Device()
 
-    with device.executor("netconf") as executor:
+    with device.executor() as executor:
         task.output["inputs"] = task.input
 
         task.output["capabilities"] = []
@@ -25,7 +25,8 @@ with candice.Task() as task:
         executor.namespaces.update({
             "s": "urn:ietf:params:xml:ns:yang:ietf-system",
             "k": "urn:ietf:params:xml:ns:yang:ietf-keystore",
-            "i": "urn:ietf:params:xml:ns:yang:ietf-interfaces"})
+            "i": "urn:ietf:params:xml:ns:yang:ietf-interfaces"
+        })
 
         element = executor.get_xpath("//s:current-datetime")
         task.output["time"] = element[0].text

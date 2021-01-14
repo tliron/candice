@@ -5,11 +5,12 @@ import candice
 with candice.Task() as task:
     router = candice.Device()
 
-    with router.executor("netconf") as executor:
+    with router.executor() as executor:
         executor.namespaces.update({
             "ietf-system": "urn:ietf:params:xml:ns:yang:ietf-system",
             "ietf-keystore": "urn:ietf:params:xml:ns:yang:ietf-keystore",
-            "ietf-interfaces": "urn:ietf:params:xml:ns:yang:ietf-interfaces"})
+            "ietf-interfaces": "urn:ietf:params:xml:ns:yang:ietf-interfaces"
+        })
 
         names = executor.get_xpath("//ietf-keystore:name")
         task.output["names"] = [n.text for n in names]

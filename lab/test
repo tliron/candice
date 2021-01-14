@@ -45,5 +45,5 @@ candice device create ran --host ran.mynamespace.svc.cluster.local:80 --protocol
 candice task set ran get-nrnetwork --file="$ROOT/examples/ran/tasks/get_nrnetwork.py"
 candice task set ran set-nrnetwork --file="$ROOT/examples/ran/tasks/set_nrnetwork.py"
 
-candice task run ran set-nrnetwork --input=id=22
-candice task run ran get-nrnetwork --input=id=22
+candice task run ran set-nrnetwork --input=id=100
+candice task run ran get-nrnetwork --input=id=100

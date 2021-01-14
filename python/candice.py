@@ -128,7 +128,12 @@ class Device:
         self.name = name or self.task.component
         self.device = args["devices"][self.name]
 
-    def executor(self, type_):
+    def executor(self, type_=None):
+        """
+        Will device to use the device's protocol
+        """
+        if type_ is None:
+            type_ = self.device["protocol"]
         if type_ == "netconf":
             return NetconfExecutor(self)
         elif type_ == "restconf":
@@ -164,7 +169,8 @@ class NetconfExecutor(Executor):
                                                     username="root",
                                                     password="root")
         self.namespaces = {
-            "base": "urn:ietf:params:xml:ns:netconf:base:1.0"}
+            "base": "urn:ietf:params:xml:ns:netconf:base:1.0"
+        }
 
     def element(self, name, ns=None, parent=None):
         if parent is None:
@@ -215,7 +221,8 @@ class RestconfExecutor(Executor):
         self.url = f"http://{host}/restconf/data" 
         self.headers = {
             "Accept" : "application/yang-data+json", 
-            "Content-Type" : "application/yang-data+json"}
+            "Content-Type" : "application/yang-data+json"
+        }
 
     def get(self, module):
         response = requests.get(f"{self.url}/{module}", headers=self.headers)

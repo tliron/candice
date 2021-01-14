@@ -8,7 +8,7 @@ with candice.Task() as task:
 
     router = candice.Device()
 
-    with router.executor("netconf") as executor:
+    with router.executor() as executor:
         executor.namespaces.update({"s": "urn:ietf:params:xml:ns:yang:ietf-system"})
 
         element = executor.get_xpath("/s:system/s:hostname")
