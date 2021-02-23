@@ -14,14 +14,23 @@ BASE_IMAGE=registry.access.redhat.com/ubi8/ubi
 
 CONTAINER_ID=$(buildah from "$BASE_IMAGE")
 
-buildah run "$CONTAINER_ID" -- dnf --assumeyes install python3
-buildah run "$CONTAINER_ID" -- dnf --assumeyes clean all
+buildah run "$CONTAINER_ID" -- dnf --assumeyes --setopt=tsflags=nodocs install python3 python3-devel openssl-devel gcc
 
+# Installing the PyCA cryptography library requires Rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | buildah run "$CONTAINER_ID" -- sh -s -- -y --component rustc
 buildah run "$CONTAINER_ID" -- python3 -m pip install \
+    setuptools-rust
+
+buildah run "$CONTAINER_ID" -- bash -c ". /root/.cargo/env && python3 -m pip install \
 	ruamel.yaml==$RUAMEL_YAML_VERSION \
 	ncclient==$NCCLIENT_VERSION \
 	ZODB==$ZODB_VERSION \
-	requests==$REQUESTS_VERSION
+	requests==$REQUESTS_VERSION"
+
+# Remove PyCA cryptography build dependencies
+buildah run "$CONTAINER_ID" -- rm --recursive /root/.cargo
+buildah run "$CONTAINER_ID" -- dnf --assumeyes remove python3-devel openssl-devel gcc
+buildah run "$CONTAINER_ID" -- dnf --assumeyes clean all
 
 buildah add "$CONTAINER_ID" "$GOPATH/bin/candice-operator" /usr/bin/
 buildah add "$CONTAINER_ID" "$GOPATH/bin/candice" /usr/bin/

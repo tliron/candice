@@ -136,7 +136,8 @@ func (self *Client) RunTask(namespace string, componentName string, taskName str
 			if podName, err := kubernetes.GetFirstPodName(self.Context, self.Kubernetes, self.Namespace, appName); err == nil {
 				var buffer bytes.Buffer
 				if err := self.Exec(self.Namespace, podName, "operator", strings.NewReader(argsYaml), &buffer, taskPath); err == nil {
-					return format.DecodeYAML(buffer.String())
+					value, _, err := ard.ReadYAML(&buffer, false)
+					return value, err
 				} else {
 					if execError, ok := err.(*kubernetes.ExecError); ok {
 						error_ := make(ard.StringMap)

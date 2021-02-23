@@ -37,7 +37,6 @@ candice task set router set-ip --file="$ROOT/examples/router/tasks/set_ip.py"
 candice task run router set-hostname --input=hostname=myhost
 candice task run router about --input=message="hello world"
 
-
 m 'ran device...'
 
 candice device create ran --host ran.mynamespace.svc.cluster.local:80 --protocol=restconf

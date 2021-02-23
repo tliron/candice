@@ -139,7 +139,7 @@ class Device:
         elif type_ == "restconf":
             return RestconfExecutor(self)
         else:
-            raise Exception("unsupported executor: %s" % type_)
+            raise Exception(f"unsupported executor: {type_}")
 
 #
 # Executor
@@ -178,17 +178,17 @@ class NetconfExecutor(Executor):
                 return lxml.etree.Element(name)
             else:
                 ns = self.namespaces.get(ns, ns)
-                return lxml.etree.Element("{%s}%s" % (ns, name))
+                return lxml.etree.Element(f"{{{ns}}}{name}")
         else:
             if ns is None:
                 if parent.prefix:
                     ns = parent.nsmap[parent.prefix]
-                    return lxml.etree.SubElement(parent, "{%s}%s" % (ns, name))
+                    return lxml.etree.SubElement(parent, f"{{{ns}}}{name}")
                 else:
                     return lxml.etree.SubElement(parent, name)
             else:
                 ns = self.namespaces.get(ns, ns)
-                return lxml.etree.SubElement(parent, "{%s}%s" % (ns, name))
+                return lxml.etree.SubElement(parent, f"{{{ns}}}{name}")
 
     def get_xpath_raw(self, expression):
         # Note: xpath is implemented by the NETCONF agent
