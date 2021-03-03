@@ -2,7 +2,6 @@ package commands
 
 import (
 	"io"
-	"io/ioutil"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -33,7 +32,7 @@ func SetTask(componentName string, taskName string) {
 		reader = os.Stdin
 	}
 
-	bytes, err := ioutil.ReadAll(reader)
+	bytes, err := io.ReadAll(reader)
 	util.FailOnError(err)
 
 	err = NewClient().Candice().SetTask(namespace, componentName, taskName, util.BytesToString(bytes))

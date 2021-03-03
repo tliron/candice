@@ -33,29 +33,29 @@ func DescribeDevice(deviceName string) {
 	if format != "" {
 		formatpkg.Print(resources.DeviceToARD(device), format, terminal.Stdout, strict, pretty)
 	} else {
-		fmt.Fprintf(terminal.Stdout, "%s: %s\n", terminal.ColorTypeName("Name"), terminal.ColorValue(device.Name))
-		fmt.Fprintf(terminal.Stdout, "%s: %s\n", terminal.ColorTypeName("Protocol"), terminal.ColorValue(string(device.Spec.Protocol)))
+		fmt.Fprintf(terminal.Stdout, "%s: %s\n", terminal.StyleTypeName("Name"), terminal.StyleValue(device.Name))
+		fmt.Fprintf(terminal.Stdout, "%s: %s\n", terminal.StyleTypeName("Protocol"), terminal.StyleValue(string(device.Spec.Protocol)))
 
 		if device.Spec.Direct != nil {
-			fmt.Fprintf(terminal.Stdout, "  %s:\n", terminal.ColorTypeName("Direct"))
+			fmt.Fprintf(terminal.Stdout, "  %s:\n", terminal.StyleTypeName("Direct"))
 			if device.Spec.Direct.Host != "" {
-				fmt.Fprintf(terminal.Stdout, "    %s: %s\n", terminal.ColorTypeName("Host"), terminal.ColorValue(device.Spec.Direct.Host))
+				fmt.Fprintf(terminal.Stdout, "    %s: %s\n", terminal.StyleTypeName("Host"), terminal.StyleValue(device.Spec.Direct.Host))
 			}
 		}
 
 		if device.Spec.Indirect != nil {
-			fmt.Fprintf(terminal.Stdout, "  %s:\n", terminal.ColorTypeName("Indirect"))
+			fmt.Fprintf(terminal.Stdout, "  %s:\n", terminal.StyleTypeName("Indirect"))
 			if device.Spec.Indirect.Namespace != "" {
-				fmt.Fprintf(terminal.Stdout, "    %s: %s\n", terminal.ColorTypeName("Namespace"), terminal.ColorValue(device.Spec.Indirect.Namespace))
+				fmt.Fprintf(terminal.Stdout, "    %s: %s\n", terminal.StyleTypeName("Namespace"), terminal.StyleValue(device.Spec.Indirect.Namespace))
 			}
 			if device.Spec.Indirect.Service != "" {
-				fmt.Fprintf(terminal.Stdout, "    %s: %s\n", terminal.ColorTypeName("Service"), terminal.ColorValue(device.Spec.Indirect.Service))
+				fmt.Fprintf(terminal.Stdout, "    %s: %s\n", terminal.StyleTypeName("Service"), terminal.StyleValue(device.Spec.Indirect.Service))
 			}
-			fmt.Fprintf(terminal.Stdout, "    %s: %s\n", terminal.ColorTypeName("Port"), terminal.ColorValue(fmt.Sprintf("%d", device.Spec.Indirect.Port)))
+			fmt.Fprintf(terminal.Stdout, "    %s: %s\n", terminal.StyleTypeName("Port"), terminal.StyleValue(fmt.Sprintf("%d", device.Spec.Indirect.Port)))
 		}
 
 		if device.Status.LastError != "" {
-			fmt.Fprintf(terminal.Stdout, "%s: %s\n", terminal.ColorTypeName("LastError"), terminal.ColorValue(device.Status.LastError))
+			fmt.Fprintf(terminal.Stdout, "%s: %s\n", terminal.StyleTypeName("LastError"), terminal.StyleValue(device.Status.LastError))
 		}
 	}
 }
