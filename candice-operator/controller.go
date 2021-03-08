@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/heptiolabs/healthcheck"
-	"github.com/tebeka/atexit"
 	candicepkg "github.com/tliron/candice/apis/clientset/versioned"
 	controllerpkg "github.com/tliron/candice/controller"
 	"github.com/tliron/kutil/kubernetes"
@@ -23,7 +22,7 @@ import (
 func Controller() {
 	if version {
 		versionpkg.Print()
-		atexit.Exit(0)
+		util.Exit(0)
 		return
 	}
 
