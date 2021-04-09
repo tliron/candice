@@ -5,9 +5,9 @@ _HERE=$(dirname "$(readlink --canonicalize "$BASH_SOURCE")")
 
 MODULE=github.com/tliron/candice
 
-K8S_VERSION=0.20.4
-RUAMEL_YAML_VERSION=0.16.12
-NCCLIENT_VERSION=0.6.9
+K8S_VERSION=0.21.0
+RUAMEL_YAML_VERSION=0.17.4
+NCCLIENT_VERSION=0.6.10
 ZODB_VERSION=5.6.0
 REQUESTS_VERSION=2.25.1
 
@@ -17,4 +17,8 @@ GOPATH=${GOPATH:-$HOME/go}
 
 WORKSPACE=${WORKSPACE:-workspace}
 
-export TMPDIR=/Depot/Temporary
+if [ -d /Depot/Temporary ]; then
+    export TMPDIR=/Depot/Temporary
+else
+    export TMPDIR=/tmp
+fi

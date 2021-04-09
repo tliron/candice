@@ -19,7 +19,7 @@ buildah run "$CONTAINER_ID" -- dnf --assumeyes --setopt=tsflags=nodocs install p
 # Installing the PyCA cryptography library requires Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | buildah run "$CONTAINER_ID" -- sh -s -- -y --component rustc
 buildah run "$CONTAINER_ID" -- python3 -m pip install \
-    setuptools-rust
+    setuptools-rust wheel
 
 buildah run "$CONTAINER_ID" -- bash -c ". /root/.cargo/env && python3 -m pip install \
 	ruamel.yaml==$RUAMEL_YAML_VERSION \
