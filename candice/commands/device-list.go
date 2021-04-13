@@ -45,7 +45,7 @@ func ListDevices() {
 
 	case "bare":
 		for _, registry := range devices.Items {
-			fmt.Fprintln(terminal.Stdout, registry.Name)
+			terminal.Println(registry.Name)
 		}
 
 	default:

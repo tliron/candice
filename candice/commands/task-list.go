@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"fmt"
 	"sort"
 
 	"github.com/spf13/cobra"
@@ -43,7 +42,7 @@ func ListTasks(componentName string) {
 
 	case "bare":
 		for _, task := range tasks {
-			fmt.Fprintln(terminal.Stdout, task)
+			terminal.Println(task)
 		}
 
 	default:

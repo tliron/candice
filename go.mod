@@ -7,7 +7,7 @@ require (
 	github.com/jetstack/cert-manager v1.3.0
 	github.com/openconfig/goyang v0.2.4
 	github.com/spf13/cobra v1.1.3
-	github.com/tliron/kutil v0.1.23
+	github.com/tliron/kutil v0.1.25
 	github.com/tliron/yamlkeys v1.3.5
 	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2
 	gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0 // indirect
