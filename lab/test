@@ -6,7 +6,7 @@ HERE=$(dirname "$(readlink --canonicalize "$BASH_SOURCE")")
 . "$HERE/_env"
 . "$ROOT/scripts/_trap"
 
-NAMESPACE=${NAMESPACE:-mynamespace}
+NAMESPACE=${NAMESPACE:-workspace}
 
 m 'cleaning up...'
 
@@ -27,7 +27,7 @@ candice operator install --wait -v
 
 m 'router device...'
 
-candice device create router --host router.mynamespace.svc.cluster.local:830 --protocol=netconf
+candice device create router --host router.$NAMESPACE.svc.cluster.local:830 --protocol=netconf
 
 candice task set router debug --file="$ROOT/examples/router/tasks/debug.py"
 candice task set router about --file="$ROOT/examples/router/tasks/about.py"
@@ -39,7 +39,7 @@ candice task run router about --input=message="hello world"
 
 m 'ran device...'
 
-candice device create ran --host ran.mynamespace.svc.cluster.local:80 --protocol=restconf
+candice device create ran --host ran.$NAMESPACE.svc.cluster.local:80 --protocol=restconf
 
 candice task set ran get-nrnetwork --file="$ROOT/examples/ran/tasks/get_nrnetwork.py"
 candice task set ran set-nrnetwork --file="$ROOT/examples/ran/tasks/set_nrnetwork.py"

@@ -32,9 +32,9 @@ buildah run "$CONTAINER_ID" -- rm --recursive /root/.cargo
 buildah run "$CONTAINER_ID" -- dnf --assumeyes remove python3-devel openssl-devel gcc
 buildah run "$CONTAINER_ID" -- dnf --assumeyes clean all
 
-buildah add "$CONTAINER_ID" "$GOPATH/bin/candice-operator" /usr/bin/
-buildah add "$CONTAINER_ID" "$GOPATH/bin/candice" /usr/bin/
-buildah add "$CONTAINER_ID" "$ROOT/python/candice.py" /usr/local/lib/python3.6/site-packages/
+buildah copy "$CONTAINER_ID" "$GOPATH/bin/candice-operator" /usr/bin/
+buildah copy "$CONTAINER_ID" "$GOPATH/bin/candice" /usr/bin/
+buildah copy "$CONTAINER_ID" "$ROOT/python/candice.py" /usr/local/lib/python3.6/site-packages/
 
 buildah config \
 	--entrypoint "/usr/bin/candice-operator" \

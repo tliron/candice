@@ -58,7 +58,10 @@ func (c *Clientset) Tracker() testing.ObjectTracker {
 	return c.tracker
 }
 
-var _ clientset.Interface = &Clientset{}
+var (
+	_ clientset.Interface = &Clientset{}
+	_ testing.FakeClient  = &Clientset{}
+)
 
 // CandiceV1alpha1 retrieves the CandiceV1alpha1Client
 func (c *Clientset) CandiceV1alpha1() candicev1alpha1.CandiceV1alpha1Interface {

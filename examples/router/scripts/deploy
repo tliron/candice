@@ -5,7 +5,7 @@ HERE=$(dirname "$(readlink --canonicalize "$BASH_SOURCE")")
 . "$HERE/../../../scripts/_env"
 . "$ROOT/scripts/_trap"
 
-kubectl delete -f "$HERE/../kubernetes/router.yaml" || true
+kubectl delete --ignore-not-found=true -f "$HERE/../kubernetes/router.yaml"
 
 if [ "$1" == '-b' ]; then
 	"$HERE/build-container-image"
