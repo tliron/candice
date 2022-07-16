@@ -3,7 +3,7 @@ package client
 import (
 	contextpkg "context"
 
-	certmanagerpkg "github.com/jetstack/cert-manager/pkg/client/clientset/versioned"
+	certmanagerpkg "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned"
 	candicepkg "github.com/tliron/candice/apis/clientset/versioned"
 	"github.com/tliron/kutil/logging"
 	apiextensionspkg "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"

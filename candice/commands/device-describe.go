@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 	resources "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
-	formatpkg "github.com/tliron/kutil/format"
 	"github.com/tliron/kutil/terminal"
+	"github.com/tliron/kutil/transcribe"
 	"github.com/tliron/kutil/util"
 )
 
@@ -31,7 +31,7 @@ func DescribeDevice(deviceName string) {
 	util.FailOnError(err)
 
 	if format != "" {
-		formatpkg.Print(resources.DeviceToARD(device), format, terminal.Stdout, strict, pretty)
+		transcribe.Print(resources.DeviceToARD(device), format, terminal.Stdout, strict, pretty)
 	} else {
 		terminal.Printf("%s: %s\n", terminal.Stylize.TypeName("Name"), terminal.Stylize.Value(device.Name))
 		terminal.Printf("%s: %s\n", terminal.Stylize.TypeName("Protocol"), terminal.Stylize.Value(string(device.Spec.Protocol)))

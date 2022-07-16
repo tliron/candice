@@ -101,7 +101,7 @@ func (c *FakeDevices) UpdateStatus(ctx context.Context, device *v1alpha1.Device,
 // Delete takes name of the device and deletes it. Returns an error if one occurs.
 func (c *FakeDevices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(devicesResource, c.ns, name), &v1alpha1.Device{})
+		Invokes(testing.NewDeleteActionWithOptions(devicesResource, c.ns, name, opts), &v1alpha1.Device{})
 
 	return err
 }

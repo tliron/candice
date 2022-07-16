@@ -8,8 +8,8 @@ import (
 
 	resources "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
 	"github.com/tliron/kutil/ard"
-	"github.com/tliron/kutil/format"
 	"github.com/tliron/kutil/kubernetes"
+	"github.com/tliron/kutil/transcribe"
 )
 
 var permissions int64 = 0700
@@ -125,7 +125,7 @@ func (self *Client) RunTask(namespace string, componentName string, taskName str
 		args["component"] = component
 		args["devices"] = devices_
 
-		if argsYaml, err := format.EncodeYAML(args, " ", false); err == nil {
+		if argsYaml, err := transcribe.EncodeYAML(args, " ", false); err == nil {
 			// Default to same namespace as operator
 			if namespace == "" {
 				namespace = self.Namespace

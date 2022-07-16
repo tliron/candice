@@ -268,7 +268,7 @@ func (self *Client) createOperatorDeployment(sourceRegistryHost string, serviceA
 								},
 							},
 							LivenessProbe: &core.Probe{
-								Handler: core.Handler{
+								ProbeHandler: core.ProbeHandler{
 									HTTPGet: &core.HTTPGetAction{
 										Port: intstr.FromInt(8086),
 										Path: "/live",
@@ -276,7 +276,7 @@ func (self *Client) createOperatorDeployment(sourceRegistryHost string, serviceA
 								},
 							},
 							ReadinessProbe: &core.Probe{
-								Handler: core.Handler{
+								ProbeHandler: core.ProbeHandler{
 									HTTPGet: &core.HTTPGetAction{
 										Port: intstr.FromInt(8086),
 										Path: "/ready",

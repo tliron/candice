@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	certmanager "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1"
-	certmanagerpkg "github.com/jetstack/cert-manager/pkg/client/clientset/versioned"
+	certmanager "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
+	certmanagerpkg "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned"
 	"github.com/tliron/kutil/kubernetes"
 	"github.com/tliron/kutil/version"
 	apps "k8s.io/api/apps/v1"

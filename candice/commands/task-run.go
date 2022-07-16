@@ -6,8 +6,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/tliron/kutil/ard"
-	formatpkg "github.com/tliron/kutil/format"
 	"github.com/tliron/kutil/terminal"
+	"github.com/tliron/kutil/transcribe"
 	urlpkg "github.com/tliron/kutil/url"
 	"github.com/tliron/kutil/util"
 	"github.com/tliron/yamlkeys"
@@ -37,7 +37,7 @@ func RunTask(componentName string, taskName string) {
 	ParseInputs()
 	result, err := NewClient().Candice().RunTask(namespace, componentName, taskName, inputValues)
 	util.FailOnError(err)
-	formatpkg.Print(result, format, terminal.Stdout, strict, pretty)
+	transcribe.Print(result, format, terminal.Stdout, strict, pretty)
 }
 
 func ParseInputs() {

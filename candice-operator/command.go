@@ -46,7 +46,7 @@ func init() {
 	command.Flags().DurationVar(&resyncPeriod, "resync", time.Second*30, "informer resync period")
 	command.Flags().UintVar(&healthPort, "health-port", 8086, "HTTP port for health check (for liveness and readiness probes)")
 
-	cobrautil.SetFlagsFromEnvironment("REPOSURE_OPERATOR_", command)
+	cobrautil.SetFlagsFromEnvironment("CANDICE_OPERATOR_", command)
 }
 
 var command = &cobra.Command{
