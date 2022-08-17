@@ -2,11 +2,11 @@ package commands
 
 import (
 	"io"
+	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/tliron/kutil/ard"
-	"github.com/tliron/kutil/terminal"
 	"github.com/tliron/kutil/transcribe"
 	urlpkg "github.com/tliron/kutil/url"
 	"github.com/tliron/kutil/util"
@@ -37,7 +37,7 @@ func RunTask(componentName string, taskName string) {
 	ParseInputs()
 	result, err := NewClient().Candice().RunTask(namespace, componentName, taskName, inputValues)
 	util.FailOnError(err)
-	transcribe.Print(result, format, terminal.Stdout, strict, pretty)
+	transcribe.Print(result, format, os.Stdout, strict, pretty)
 }
 
 func ParseInputs() {

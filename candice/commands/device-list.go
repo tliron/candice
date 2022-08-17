@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 	resources "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
@@ -53,6 +54,6 @@ func ListDevices() {
 		for index, registry := range devices.Items {
 			list[index] = resources.DeviceToARD(&registry)
 		}
-		transcribe.Print(list, format, terminal.Stdout, strict, pretty)
+		transcribe.Print(list, format, os.Stdout, strict, pretty)
 	}
 }

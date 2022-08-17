@@ -3,10 +3,10 @@ package commands
 import (
 	"fmt"
 	"io"
+	"os"
 
 	"github.com/tliron/candice/controller"
 	"github.com/tliron/kutil/kubernetes"
-	terminalutil "github.com/tliron/kutil/terminal"
 	"github.com/tliron/kutil/util"
 )
 
@@ -18,7 +18,7 @@ func Logs(appNameSuffix string, containerName string) {
 		defer reader.Close()
 	}
 	for _, reader := range readers {
-		io.Copy(terminalutil.Stdout, reader)
+		io.Copy(os.Stdout, reader)
 	}
 }
 

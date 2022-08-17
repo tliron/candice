@@ -1,11 +1,13 @@
 package commands
 
 import (
+	"os"
+
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/spf13/cobra"
 
 	//"github.com/tliron/kutil/transcribe"
-	"github.com/tliron/kutil/terminal"
+
 	"github.com/tliron/kutil/util"
 )
 
@@ -25,7 +27,7 @@ var yangCommand = &cobra.Command{
 		if len(errs) > 0 {
 			util.FailOnError(errs[0])
 		}
-		entry.Print(terminal.Stdout)
+		entry.Print(os.Stdout)
 		//transcribe.Print(entry.Name, format, terminal.Stdout, strict, pretty)
 	},
 }

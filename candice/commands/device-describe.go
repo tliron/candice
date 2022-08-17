@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 	resources "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
@@ -31,31 +32,31 @@ func DescribeDevice(deviceName string) {
 	util.FailOnError(err)
 
 	if format != "" {
-		transcribe.Print(resources.DeviceToARD(device), format, terminal.Stdout, strict, pretty)
+		transcribe.Print(resources.DeviceToARD(device), format, os.Stdout, strict, pretty)
 	} else {
-		terminal.Printf("%s: %s\n", terminal.Stylize.TypeName("Name"), terminal.Stylize.Value(device.Name))
-		terminal.Printf("%s: %s\n", terminal.Stylize.TypeName("Protocol"), terminal.Stylize.Value(string(device.Spec.Protocol)))
+		terminal.Printf("%s: %s\n", terminal.DefaultStylist.TypeName("Name"), terminal.DefaultStylist.Value(device.Name))
+		terminal.Printf("%s: %s\n", terminal.DefaultStylist.TypeName("Protocol"), terminal.DefaultStylist.Value(string(device.Spec.Protocol)))
 
 		if device.Spec.Direct != nil {
-			terminal.Printf("  %s:\n", terminal.Stylize.TypeName("Direct"))
+			terminal.Printf("  %s:\n", terminal.DefaultStylist.TypeName("Direct"))
 			if device.Spec.Direct.Host != "" {
-				terminal.Printf("    %s: %s\n", terminal.Stylize.TypeName("Host"), terminal.Stylize.Value(device.Spec.Direct.Host))
+				terminal.Printf("    %s: %s\n", terminal.DefaultStylist.TypeName("Host"), terminal.DefaultStylist.Value(device.Spec.Direct.Host))
 			}
 		}
 
 		if device.Spec.Indirect != nil {
-			terminal.Printf("  %s:\n", terminal.Stylize.TypeName("Indirect"))
+			terminal.Printf("  %s:\n", terminal.DefaultStylist.TypeName("Indirect"))
 			if device.Spec.Indirect.Namespace != "" {
-				terminal.Printf("    %s: %s\n", terminal.Stylize.TypeName("Namespace"), terminal.Stylize.Value(device.Spec.Indirect.Namespace))
+				terminal.Printf("    %s: %s\n", terminal.DefaultStylist.TypeName("Namespace"), terminal.DefaultStylist.Value(device.Spec.Indirect.Namespace))
 			}
 			if device.Spec.Indirect.Service != "" {
-				terminal.Printf("    %s: %s\n", terminal.Stylize.TypeName("Service"), terminal.Stylize.Value(device.Spec.Indirect.Service))
+				terminal.Printf("    %s: %s\n", terminal.DefaultStylist.TypeName("Service"), terminal.DefaultStylist.Value(device.Spec.Indirect.Service))
 			}
-			terminal.Printf("    %s: %s\n", terminal.Stylize.TypeName("Port"), terminal.Stylize.Value(fmt.Sprintf("%d", device.Spec.Indirect.Port)))
+			terminal.Printf("    %s: %s\n", terminal.DefaultStylist.TypeName("Port"), terminal.DefaultStylist.Value(fmt.Sprintf("%d", device.Spec.Indirect.Port)))
 		}
 
 		if device.Status.LastError != "" {
-			terminal.Printf("%s: %s\n", terminal.Stylize.TypeName("LastError"), terminal.Stylize.Value(device.Status.LastError))
+			terminal.Printf("%s: %s\n", terminal.DefaultStylist.TypeName("LastError"), terminal.DefaultStylist.Value(device.Status.LastError))
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"os"
 	"sort"
 
 	"github.com/spf13/cobra"
@@ -54,6 +55,6 @@ func ListTasks(componentName string) {
 			map_["Namespace"] = ""
 			list[index] = map_
 		}
-		transcribe.Print(list, format, terminal.Stdout, strict, pretty)
+		transcribe.Print(list, format, os.Stdout, strict, pretty)
 	}
 }
