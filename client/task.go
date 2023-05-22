@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	resources "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
-	"github.com/tliron/kutil/ard"
+	"github.com/tliron/go-ard"
 	"github.com/tliron/kutil/kubernetes"
 	"github.com/tliron/kutil/transcribe"
 )

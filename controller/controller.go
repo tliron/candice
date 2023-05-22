@@ -10,8 +10,8 @@ import (
 	candicelisters "github.com/tliron/candice/apis/listers/candice.puccini.cloud/v1alpha1"
 	"github.com/tliron/candice/client"
 	candiceresources "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
+	"github.com/tliron/commonlog"
 	kubernetesutil "github.com/tliron/kutil/kubernetes"
-	"github.com/tliron/kutil/logging"
 	apiextensionspkg "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	dynamicpkg "k8s.io/client-go/dynamic"
@@ -43,7 +43,7 @@ type Controller struct {
 	Devices candicelisters.DeviceLister
 
 	Context contextpkg.Context
-	Log     logging.Logger
+	Log     commonlog.Logger
 }
 
 func NewController(context contextpkg.Context, toolName string, clusterMode bool, clusterRole string, namespace string, dynamic dynamicpkg.Interface, kubernetes kubernetes.Interface, apiExtensions apiextensionspkg.Interface, candice candiceclientset.Interface, config *restpkg.Config, informerResyncPeriod time.Duration, stopChannel <-chan struct{}) *Controller {
@@ -54,7 +54,7 @@ func NewController(context contextpkg.Context, toolName string, clusterMode bool
 		}
 	}
 
-	log := logging.GetLoggerf("%s.controller", toolName)
+	log := commonlog.GetLoggerf("%s.controller", toolName)
 
 	self := Controller{
 		Config:      config,

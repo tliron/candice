@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	group "github.com/tliron/candice/resources/candice.puccini.cloud"
-	"github.com/tliron/kutil/ard"
+	"github.com/tliron/go-ard"
 	"github.com/tliron/kutil/kubernetes"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	meta "k8s.io/apimachinery/pkg/apis/meta/v1"

@@ -5,7 +5,7 @@ import (
 
 	certmanagerpkg "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned"
 	candicepkg "github.com/tliron/candice/apis/clientset/versioned"
-	"github.com/tliron/kutil/logging"
+	"github.com/tliron/commonlog"
 	apiextensionspkg "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	kubernetespkg "k8s.io/client-go/kubernetes"
 	restpkg "k8s.io/client-go/rest"
@@ -33,7 +33,7 @@ type Client struct {
 	OperatorImageReference string
 
 	LogName string
-	Log     logging.Logger
+	Log     commonlog.Logger
 }
 
 func NewClient(kubernetes kubernetespkg.Interface, apiExtensions apiextensionspkg.Interface, candice candicepkg.Interface, rest restpkg.Interface, config *restpkg.Config, context contextpkg.Context, clusterMode bool, clusterRole string, namespace string, namePrefix string, partOf string, managedBy string, operatorImageReference string, logName string) *Client {
@@ -52,6 +52,6 @@ func NewClient(kubernetes kubernetespkg.Interface, apiExtensions apiextensionspk
 		ManagedBy:              managedBy,
 		OperatorImageReference: operatorImageReference,
 		LogName:                logName,
-		Log:                    logging.GetLoggerf("%s.admin", logName),
+		Log:                    commonlog.GetLoggerf("%s.admin", logName),
 	}
 }

@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/tliron/kutil/ard"
+	"github.com/tliron/exturl"
+	"github.com/tliron/go-ard"
 	"github.com/tliron/kutil/transcribe"
-	urlpkg "github.com/tliron/kutil/url"
 	"github.com/tliron/kutil/util"
 	"github.com/tliron/yamlkeys"
 )
@@ -44,10 +44,10 @@ func ParseInputs() {
 	if inputsUrl != "" {
 		log.Infof("load inputs from %q", inputsUrl)
 
-		urlContext := urlpkg.NewContext()
+		urlContext := exturl.NewContext()
 		defer urlContext.Release()
 
-		url, err := urlpkg.NewValidURL(inputsUrl, nil, urlContext)
+		url, err := exturl.NewValidURL(inputsUrl, nil, urlContext)
 		util.FailOnError(err)
 		reader, err := url.Open()
 		util.FailOnError(err)

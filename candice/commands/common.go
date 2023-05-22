@@ -3,14 +3,14 @@ package commands
 import (
 	contextpkg "context"
 
-	"github.com/tliron/kutil/logging"
+	"github.com/tliron/commonlog"
 )
 
 const toolName = "candice"
 
 var context = contextpkg.TODO()
 
-var log = logging.GetLogger(toolName)
+var log = commonlog.GetLogger(toolName)
 
 var filePath string
 var directoryPath string
