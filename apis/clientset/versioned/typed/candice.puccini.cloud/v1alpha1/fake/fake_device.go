@@ -4,11 +4,13 @@ package fake
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 
+	candicepuccinicloudv1alpha1 "github.com/tliron/candice/apis/applyconfiguration/candice.puccini.cloud/v1alpha1"
 	v1alpha1 "github.com/tliron/candice/resources/candice.puccini.cloud/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -20,9 +22,9 @@ type FakeDevices struct {
 	ns   string
 }
 
-var devicesResource = schema.GroupVersionResource{Group: "candice.puccini.cloud", Version: "v1alpha1", Resource: "devices"}
+var devicesResource = v1alpha1.SchemeGroupVersion.WithResource("devices")
 
-var devicesKind = schema.GroupVersionKind{Group: "candice.puccini.cloud", Version: "v1alpha1", Kind: "Device"}
+var devicesKind = v1alpha1.SchemeGroupVersion.WithKind("Device")
 
 // Get takes name of the device, and returns the corresponding device object, and an error if there is any.
 func (c *FakeDevices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.Device, err error) {
@@ -118,6 +120,51 @@ func (c *FakeDevices) DeleteCollection(ctx context.Context, opts v1.DeleteOption
 func (c *FakeDevices) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.Device, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(devicesResource, c.ns, name, pt, data, subresources...), &v1alpha1.Device{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.Device), err
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied device.
+func (c *FakeDevices) Apply(ctx context.Context, device *candicepuccinicloudv1alpha1.DeviceApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Device, err error) {
+	if device == nil {
+		return nil, fmt.Errorf("device provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(device)
+	if err != nil {
+		return nil, err
+	}
+	name := device.Name
+	if name == nil {
+		return nil, fmt.Errorf("device.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(devicesResource, c.ns, *name, types.ApplyPatchType, data), &v1alpha1.Device{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.Device), err
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *FakeDevices) ApplyStatus(ctx context.Context, device *candicepuccinicloudv1alpha1.DeviceApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Device, err error) {
+	if device == nil {
+		return nil, fmt.Errorf("device provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(device)
+	if err != nil {
+		return nil, err
+	}
+	name := device.Name
+	if name == nil {
+		return nil, fmt.Errorf("device.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(devicesResource, c.ns, *name, types.ApplyPatchType, data, "status"), &v1alpha1.Device{})
 
 	if obj == nil {
 		return nil, err

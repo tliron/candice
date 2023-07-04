@@ -17,8 +17,7 @@ type Interface interface {
 	CandiceV1alpha1() candicev1alpha1.CandiceV1alpha1Interface
 }
 
-// Clientset contains the clients for groups. Each group has exactly one
-// version included in a Clientset.
+// Clientset contains the clients for groups.
 type Clientset struct {
 	*discovery.DiscoveryClient
 	candiceV1alpha1 *candicev1alpha1.CandiceV1alpha1Client

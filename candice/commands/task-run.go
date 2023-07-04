@@ -1,6 +1,7 @@
 package commands
 
 import (
+	contextpkg "context"
 	"io"
 	"os"
 	"strings"
@@ -29,27 +30,27 @@ var taskRunCommand = &cobra.Command{
 	Short: "Run a task for a component",
 	Args:  cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
-		RunTask(args[0], args[1])
+		RunTask(contextpkg.TODO(), args[0], args[1])
 	},
 }
 
-func RunTask(componentName string, taskName string) {
-	ParseInputs()
+func RunTask(context contextpkg.Context, componentName string, taskName string) {
+	ParseInputs(context)
 	result, err := NewClient().Candice().RunTask(namespace, componentName, taskName, inputValues)
 	util.FailOnError(err)
 	transcribe.Print(result, format, os.Stdout, strict, pretty)
 }
 
-func ParseInputs() {
+func ParseInputs(context contextpkg.Context) {
 	if inputsUrl != "" {
 		log.Infof("load inputs from %q", inputsUrl)
 
 		urlContext := exturl.NewContext()
 		defer urlContext.Release()
 
-		url, err := exturl.NewValidURL(inputsUrl, nil, urlContext)
+		url, err := urlContext.NewValidURL(context, inputsUrl, nil)
 		util.FailOnError(err)
-		reader, err := url.Open()
+		reader, err := url.Open(context)
 		util.FailOnError(err)
 		if closer, ok := reader.(io.Closer); ok {
 			defer closer.Close()
